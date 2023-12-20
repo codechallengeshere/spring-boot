@@ -1,10 +1,7 @@
 package com.code.challenge.authentication.handler;
 
 import com.code.challenge.authentication.dto.ApiErrorResponse;
-import com.code.challenge.authentication.exception.ApiException;
-import com.code.challenge.authentication.exception.BaseApplicationException;
-import com.code.challenge.authentication.exception.CustomerNotFoundException;
-import com.code.challenge.authentication.exception.CustomerNotUpdatedException;
+import com.code.challenge.authentication.exception.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +30,15 @@ public class ApplicationExceptionHandler {
 
     public ApplicationExceptionHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    @ExceptionHandler(SendMailException.class)
+    public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
+        var httpStatus = sendMailException.getHttpStatus();
+
+        var apiErrorResponse = getApiErrorResponse(sendMailException);
+
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(CustomerNotFoundException.class)
