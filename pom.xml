@@ -40,8 +40,11 @@
 
         <lombok.version>1.18.30</lombok.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
+        <data-mask-core.version>1.2.0</data-mask-core.version>
 
         <h2.version>2.2.224</h2.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <hibernate-core.version>6.4.1.Final</hibernate-core.version>
     </properties>
 
     <dependencies>
@@ -107,6 +110,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.bancolombia</groupId>
+            <artifactId>data-mask-core</artifactId>
+            <version>${data-mask-core.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
@@ -130,6 +139,18 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
 
         <dependency>

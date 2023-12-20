@@ -23,14 +23,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.code.challenge.authentication.controller.ResetPasswordController.RESET_PASSWORD_CONTROLLER_ENDPOINT_PREFIX_PATH;
+
 @Tag(name = "Reset Password", description = "Endpoints for reset password")
 @RestController
 @RequestMapping(
-        value = "/v1",
+        value = RESET_PASSWORD_CONTROLLER_ENDPOINT_PREFIX_PATH,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 public class ResetPasswordController {
+
+    public static final String RESET_PASSWORD_CONTROLLER_ENDPOINT_PREFIX_PATH = "/v1";
+    public static final String RESET_PASSWORD_ENDPOINT_PATH = "/reset-password";
 
     private final ResetPasswordService resetPasswordService;
 
@@ -78,7 +83,7 @@ public class ResetPasswordController {
             }
     )
     @PostMapping(
-            value = "/reset-password",
+            value = RESET_PASSWORD_ENDPOINT_PATH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

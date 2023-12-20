@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.util.Date;
+
 @Slf4j
 @ConditionalOnProperty(name = "app.fixtures.enabled", havingValue = "true")
 @Component
@@ -25,15 +28,40 @@ public class FixturesLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         insertCustomer();
+        insertCustomerWithResetPasswordRequest();
+    }
+
+    private void insertCustomerWithResetPasswordRequest() {
+        log.debug("FixturesLoader#insertCustomer: start");
+
+        String password = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
+        String token = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
+
+        var instant = Instant.now().plusSeconds(60 * 60 * 3);
+        var tokenExpiresAt = Date.from(instant);
+
+        var customer = Customer.builder()
+                .email("with.token@user.local")
+                .firstName("first name")
+                .lastName("last name")
+                .password(password)
+                .isEnabled(false)
+                .resetPasswordToken(token)
+                .resetPasswordTokenExpiresAt(tokenExpiresAt)
+                .build();
+
+        customerRepository.save(customer);
+
+        log.debug("FixturesLoader#insertCustomerWithResetPasswordRequest: success");
     }
 
     private void insertCustomer() {
-        log.debug("inserting customer fixture");
+        log.debug("FixturesLoader#insertCustomer: start");
 
         String password = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
 
         var customer = Customer.builder()
-                .email("my@mail.com")
+                .email("active@user.local")
                 .firstName("first name")
                 .lastName("last name")
                 .password(password)
@@ -43,6 +71,6 @@ public class FixturesLoader implements ApplicationRunner {
 
         customerRepository.save(customer);
 
-        log.debug("inserted customer fixture");
+        log.debug("FixturesLoader#insertCustomer: success");
     }
 }

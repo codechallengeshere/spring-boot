@@ -63,3 +63,4 @@ build/
 ### Custom ###
 !.gitkeep
 /log/
+/docker/db/

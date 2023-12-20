@@ -2,25 +2,20 @@ server:
   port: 9090
 
 spring:
-  datasource:
-    url: jdbc:h2:mem:authentication-test
-    driverClassName: org.h2.Driver
-    username: admin
-    password: password
-  jpa:
-    open-in-view: false
+  application:
+    name: authentication-test
 
 management:
   endpoint:
     health:
       enabled: true
     info:
-      enabled: true
+      enabled: false
   endpoints:
     web:
       discovery:
         enabled: false
-    enabled-by-default: true
+    enabled-by-default: false
 
 logging:
   config: src/test/resources/logback-test.xml

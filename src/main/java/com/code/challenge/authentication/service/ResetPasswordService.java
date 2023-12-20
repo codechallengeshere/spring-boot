@@ -35,9 +35,9 @@ public class ResetPasswordService {
     }
 
     public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws CustomerNotFoundException, CustomerNotUpdatedException, SendMailException {
-        String resetPasswordToken = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
-
         var customer = getCustomer(resetPasswordRequest);
+
+        String resetPasswordToken = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
         customer.setResetPasswordToken(resetPasswordToken);
         customer.setEnabled(false);
 
@@ -52,10 +52,9 @@ public class ResetPasswordService {
 
     private void sendMail(Customer customer, String resetPasswordToken) throws SendMailException {
         try {
-            emailService.sendEmail(
+            emailService.sendResetPasswordTokenMail(
                     customer.getEmail(),
-                    "reset password token",
-                    "reset password token: " + resetPasswordToken
+                    resetPasswordToken
             );
         } catch (MailException mailException) {
             throw new SendMailException(

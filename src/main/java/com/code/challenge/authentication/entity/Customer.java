@@ -81,6 +81,9 @@ public class Customer {
     @Column(name = "reset_password_token", unique = true, length = 255)
     private String resetPasswordToken;
 
+    @Column(name = "reset_password_expires_at")
+    private Date resetPasswordTokenExpiresAt;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
