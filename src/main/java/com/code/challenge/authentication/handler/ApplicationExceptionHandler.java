@@ -28,12 +28,13 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(SendMailException.class)
     public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
-        log.debug("ResetPasswordController#resetPassword: success");
+        log.debug("ResetPasswordController#handleSendMailException: start " + ApplicationHelper.convertObjectToJsonString(sendMailException));
 
         var httpStatus = sendMailException.getHttpStatus();
 
         var apiErrorResponse = getApiErrorResponse(sendMailException);
 
+        log.debug("ResetPasswordController#handleSendMailException: end " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 

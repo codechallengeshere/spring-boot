@@ -1,5 +1,6 @@
 package com.code.challenge.authentication.entity;
 
+import co.com.bancolombia.datamask.Mask;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -53,22 +54,26 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Mask(isEmail = true)
     @NotBlank
     @Length(max = 50)
     @Email
     @Column(name = "email", unique = true, nullable = false, length = 50)
     private String email;
 
+    @Mask
     @NotBlank
     @Length(max = 50)
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
+    @Mask
     @NotBlank
     @Length(max = 50)
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
+    @Mask
     @NotBlank
     @Length(max = 255)
     @Column(name = "password", nullable = false, length = 255)
@@ -78,6 +83,7 @@ public class Customer {
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
 
+    @Mask(leftVisible = 21)
     @Column(name = "reset_password_token", unique = true, length = 255)
     private String resetPasswordToken;
 

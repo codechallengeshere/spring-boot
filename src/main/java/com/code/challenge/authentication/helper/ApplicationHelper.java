@@ -16,7 +16,7 @@ public class ApplicationHelper {
         String result;
 
         try {
-            result = AuthenticationApplicationConfig.getPrimaryObjectMapper().writeValueAsString(object);
+            result = AuthenticationApplicationConfig.getMaskingObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException jsonProcessingException) {
             throw new ApplicationException(
                     ERROR_CODE__INTERNAL_SERVER_ERROR,

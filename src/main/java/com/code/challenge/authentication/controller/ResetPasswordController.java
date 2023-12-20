@@ -96,11 +96,11 @@ public class ResetPasswordController {
             @RequestBody
             ResetPasswordRequest resetPasswordRequest
     ) throws CustomerNotFoundException, CustomerNotUpdatedException, SendMailException, JsonProcessingException {
-        log.debug("ResetPasswordController#resetPassword: " + ApplicationHelper.convertObjectToJsonString(resetPasswordRequest));
+        log.debug("ResetPasswordController#resetPassword: start: " + ApplicationHelper.convertObjectToJsonString(resetPasswordRequest));
 
         var resetPasswordResponse = resetPasswordService.resetPassword(resetPasswordRequest);
 
-        log.debug("ResetPasswordController#resetPassword: success");
+        log.debug("ResetPasswordController#resetPassword: end: " + ApplicationHelper.convertObjectToJsonString(resetPasswordResponse));
         return new ResponseEntity<>(resetPasswordResponse, HttpStatus.OK);
     }
 }

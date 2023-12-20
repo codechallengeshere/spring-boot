@@ -1,6 +1,7 @@
 package com.code.challenge.authentication.runner;
 
 import com.code.challenge.authentication.entity.Customer;
+import com.code.challenge.authentication.helper.ApplicationHelper;
 import com.code.challenge.authentication.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -52,7 +53,7 @@ public class FixturesLoader implements ApplicationRunner {
 
         customerRepository.save(customer);
 
-        log.debug("FixturesLoader#insertCustomerWithResetPasswordRequest: success");
+        log.debug("FixturesLoader#insertCustomerWithResetPasswordRequest: end:" + ApplicationHelper.convertObjectToJsonString(customer));
     }
 
     private void insertCustomer() {
@@ -71,6 +72,6 @@ public class FixturesLoader implements ApplicationRunner {
 
         customerRepository.save(customer);
 
-        log.debug("FixturesLoader#insertCustomer: success");
+        log.debug("FixturesLoader#insertCustomer: end: " + ApplicationHelper.convertObjectToJsonString(customer));
     }
 }

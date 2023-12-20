@@ -1,5 +1,6 @@
 package com.code.challenge.authentication.config;
 
+import co.com.bancolombia.datamask.databind.MaskingObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.context.annotation.Bean;
@@ -9,17 +10,24 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class AuthenticationApplicationConfig {
 
-    private static final ObjectMapper objectMapper = JsonMapper.builder()
-            .findAndAddModules()
-            .build();
+    private static ObjectMapper maskingObjectMapper;
 
     @Primary
     @Bean
     protected ObjectMapper getObjectMapper() {
-        return objectMapper;
+        return JsonMapper.builder()
+                .findAndAddModules()
+                .build();
     }
 
-    public static ObjectMapper getPrimaryObjectMapper() {
-        return objectMapper;
+    @Bean
+    public ObjectMapper objectMapper() {
+        AuthenticationApplicationConfig.maskingObjectMapper = new MaskingObjectMapper();
+
+        return maskingObjectMapper;
+    }
+
+    public static ObjectMapper getMaskingObjectMapper() {
+        return AuthenticationApplicationConfig.maskingObjectMapper;
     }
 }

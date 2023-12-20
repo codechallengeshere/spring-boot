@@ -28,11 +28,11 @@ public class EmailService {
     }
 
     public void sendResetPasswordTokenMail(String to, String token) {
-        var params = Map.of(
+        var paramsToLog = Map.of(
                 "to", MaskUtils.maskAsEmail(to),
                 "token", MaskUtils.mask(token, 21, 0)
         );
-        log.debug("EmailService#sendEmail: " + ApplicationHelper.convertObjectToJsonString(params));
+        log.debug("EmailService#sendEmail: " + ApplicationHelper.convertObjectToJsonString(paramsToLog));
 
         var simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailPropertiesConfig.getFrom());
@@ -42,6 +42,6 @@ public class EmailService {
 
         javaMailSender.send(simpleMailMessage);
 
-        log.debug("EmailService#sendEmail: success");
+        log.debug("EmailService#sendEmail: end");
     }
 }
