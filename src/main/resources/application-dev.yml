@@ -8,7 +8,6 @@ spring:
     username: admin
     password: password
   jpa:
-    open-in-view: false
     show-sql: true
     properties:
       hibernate:
@@ -37,3 +36,18 @@ management:
 
 logging:
   config: src/main/resources/logback-dev.xml
+  level:
+    com.code.challenge.authentication: DEBUG
+
+app:
+  fixtures:
+    enabled: true
+  mail:
+    host: localhost
+    port: 1025
+    transport:
+      protocol: smtp
+      smtp:
+        auth: false
+        starttls:
+          enable: false

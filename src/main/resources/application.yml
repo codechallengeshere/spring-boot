@@ -9,6 +9,8 @@ spring:
   data:
     rest:
       default-media-type: application/json
+  jpa:
+    open-in-view: false
 
 management:
   endpoint:
@@ -28,3 +30,23 @@ springdoc:
 
 logging:
   config: src/main/resources/logback.xml
+  level:
+    org.springframework.web: INFO
+    com.code.challenge.authentication: INFO
+
+app:
+  fixtures:
+    enabled: true
+  mail:
+    debug: false
+    from: authentication@service.local
+    host: smtp.gmail.com
+    port: 587
+    username: username
+    password: password
+    transport:
+      protocol: smtp
+      smtp:
+        auth: true
+        starttls:
+          enable: true
