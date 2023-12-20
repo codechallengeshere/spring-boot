@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__VALIDATION_ERROR;
@@ -28,7 +27,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(SendMailException.class)
     public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
-        log.error("ResetPasswordController#handleSendMailException: start: " + ApplicationHelper.convertObjectToJsonString(List.of(sendMailException.getMessage())));
+        log.error("ResetPasswordController#handleSendMailException: start: " + ApplicationHelper.convertObjectToJsonString(sendMailException));
 
         var httpStatus = sendMailException.getHttpStatus();
 
@@ -40,7 +39,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotFoundExceptionHandler(CustomerNotFoundException customerNotFoundException) {
-        log.error("ResetPasswordController#handleCustomerNotFoundExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(List.of(customerNotFoundException.getErrorMessage())));
+        log.error("ResetPasswordController#handleCustomerNotFoundExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotFoundException));
 
         var httpStatus = customerNotFoundException.getHttpStatus();
 
@@ -52,7 +51,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(CustomerNotUpdatedException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotUpdatedExceptionHandler(CustomerNotUpdatedException customerNotUpdatedException) {
-        log.error("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(List.of(customerNotUpdatedException.getMessage())));
+        log.error("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotUpdatedException));
 
         var httpStatus = customerNotUpdatedException.getHttpStatus();
 
