@@ -1,0 +1,5 @@
+server:
+  port: 8080
+
+logging:
+  config: src/main/resources/logback-dev.xml

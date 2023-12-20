@@ -1,0 +1,26 @@
+server:
+  port: 80
+  servlet:
+    context-path: /authentication
+
+spring:
+  application:
+    name: authentication
+  data:
+    rest:
+      default-media-type: application/json
+
+management:
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+  endpoints:
+    web:
+      discovery:
+        enabled: false
+    enabled-by-default: false
+
+logging:
+  config: src/main/resources/logback.xml
