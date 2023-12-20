@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class BaseApplicationException extends Exception {
+public abstract class BaseApplicationException extends RuntimeException {
 
     private final String errorCode;
     private final String errorMessage;

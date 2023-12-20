@@ -9,11 +9,17 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class AuthenticationApplicationConfig {
 
+    private static final ObjectMapper objectMapper = JsonMapper.builder()
+            .findAndAddModules()
+            .build();
+
     @Primary
     @Bean
     protected ObjectMapper getObjectMapper() {
-        return JsonMapper.builder()
-                .findAndAddModules()
-                .build();
+        return objectMapper;
+    }
+
+    public static ObjectMapper getPrimaryObjectMapper() {
+        return objectMapper;
     }
 }

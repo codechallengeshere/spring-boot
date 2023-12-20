@@ -2,6 +2,7 @@ package com.code.challenge.authentication.service;
 
 import co.com.bancolombia.datamask.MaskUtils;
 import com.code.challenge.authentication.config.MailPropertiesConfig;
+import com.code.challenge.authentication.helper.ApplicationHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -31,7 +32,7 @@ public class EmailService {
                 "to", MaskUtils.maskAsEmail(to),
                 "token", MaskUtils.mask(token, 21, 0)
         );
-        log.debug("EmailService#sendEmail: " + params);
+        log.debug("EmailService#sendEmail: " + ApplicationHelper.convertObjectToJsonString(params));
 
         var simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailPropertiesConfig.getFrom());

@@ -19,3 +19,5 @@ management:
 
 logging:
   config: src/test/resources/logback-test.xml
+  level:
+    com.code.challenge.authentication: DEBUG

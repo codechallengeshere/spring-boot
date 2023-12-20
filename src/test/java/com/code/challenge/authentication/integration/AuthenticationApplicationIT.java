@@ -44,8 +44,7 @@ public abstract class AuthenticationApplicationIT {
 
     @BeforeEach
     void beforeEach() {
-//        customerRepositoryMockBean = mock(CustomerRepository.class);
-//        javaMailSenderMockBean = mock(JavaMailSender.class);
+        // no-op
     }
 
     @AfterEach

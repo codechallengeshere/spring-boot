@@ -2,8 +2,8 @@ package com.code.challenge.authentication.handler;
 
 import com.code.challenge.authentication.dto.ApiErrorResponse;
 import com.code.challenge.authentication.exception.*;
+import com.code.challenge.authentication.helper.ApplicationHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -26,14 +26,10 @@ import static com.code.challenge.authentication.constant.ApplicationErrorMessage
 @ControllerAdvice
 public class ApplicationExceptionHandler {
 
-    private final ObjectMapper objectMapper;
-
-    public ApplicationExceptionHandler(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
     @ExceptionHandler(SendMailException.class)
     public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
+        log.debug("ResetPasswordController#resetPassword: success");
+
         var httpStatus = sendMailException.getHttpStatus();
 
         var apiErrorResponse = getApiErrorResponse(sendMailException);
@@ -96,7 +92,7 @@ public class ApplicationExceptionHandler {
 
         var apiException = new ApiException(
                 ERROR_CODE__VALIDATION_ERROR,
-                objectMapper.writeValueAsString(errors),
+                ApplicationHelper.convertObjectToJsonString(errors),
                 httpStatus
         );
 
