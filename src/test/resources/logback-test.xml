@@ -11,16 +11,6 @@
         </encoder>
     </appender>
 
-    <appender name="CHANGELOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/changelog-test_%d{"yyyyMMdd", UTC}.log</fileNamePattern>
-        </rollingPolicy>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{"HH:mm:ss.SSS", UTC} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%level] %d{"HH:mm:ss.SSS", UTC} - %msg%n</pattern>

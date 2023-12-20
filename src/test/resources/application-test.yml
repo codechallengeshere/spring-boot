@@ -1,24 +1,14 @@
 server:
-  port: 8080
+  port: 9090
 
 spring:
   datasource:
-    url: jdbc:h2:mem:authentication-dev
+    url: jdbc:h2:mem:authentication-test
     driverClassName: org.h2.Driver
     username: admin
     password: password
   jpa:
     open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-    hibernate:
-      ddl-auto: create-drop
-  h2:
-    console:
-      enabled: true
 
 management:
   endpoint:
@@ -33,4 +23,4 @@ management:
     enabled-by-default: true
 
 logging:
-  config: src/main/resources/logback-dev.xml
+  config: src/test/resources/logback-test.xml

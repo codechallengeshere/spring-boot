@@ -15,7 +15,7 @@ management:
     health:
       enabled: true
     info:
-      enabled: true
+      enabled: false
   endpoints:
     web:
       discovery:

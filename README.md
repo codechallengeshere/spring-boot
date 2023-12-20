@@ -18,6 +18,10 @@
 
 * @TODO
 
+## Swagger
+
+* url - /authentication/swagger-ui/index.html
+
 ## Authors
 
 * Aleksandrs R.
