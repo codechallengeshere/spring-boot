@@ -1,42 +1,109 @@
 package com.code.challenge.authentication.handler;
 
-import com.code.challenge.authentication.dto.ErrorResponse;
+import com.code.challenge.authentication.dto.ApiErrorResponse;
+import com.code.challenge.authentication.exception.ApiException;
 import com.code.challenge.authentication.exception.BaseApplicationException;
 import com.code.challenge.authentication.exception.CustomerNotFoundException;
 import com.code.challenge.authentication.exception.CustomerNotUpdatedException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__VALIDATION_ERROR;
+import static com.code.challenge.authentication.constant.ApplicationErrorMessage.ERROR_MESSAGE__MISSING_REQUIRED_PARAMS;
+
+@Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApplicationExceptionHandler {
+
+    private final ObjectMapper objectMapper;
+
+    public ApplicationExceptionHandler(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCustomerNotFoundExceptionHandler(CustomerNotFoundException customerNotFoundException) {
+    public ResponseEntity<ApiErrorResponse> handleCustomerNotFoundExceptionHandler(CustomerNotFoundException customerNotFoundException) {
         var httpStatus = customerNotFoundException.getHttpStatus();
 
-        var errorResponse = getErrorResponse(customerNotFoundException, httpStatus);
+        var apiErrorResponse = getApiErrorResponse(customerNotFoundException);
 
-        return new ResponseEntity<>(errorResponse, httpStatus);
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(CustomerNotUpdatedException.class)
-    public ResponseEntity<ErrorResponse> handleCustomerNotUpdatedExceptionHandler(CustomerNotUpdatedException customerNotUpdatedException) {
+    public ResponseEntity<ApiErrorResponse> handleCustomerNotUpdatedExceptionHandler(CustomerNotUpdatedException customerNotUpdatedException) {
         var httpStatus = customerNotUpdatedException.getHttpStatus();
 
-        var errorResponse = getErrorResponse(customerNotUpdatedException, httpStatus);
+        var apiErrorResponse = getApiErrorResponse(customerNotUpdatedException);
 
-        return new ResponseEntity<>(errorResponse, httpStatus);
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
-    private ErrorResponse getErrorResponse(BaseApplicationException applicationException, HttpStatus httpStatus) {
-        var errorResponse = new ErrorResponse();
-        errorResponse.setErrorCode(applicationException.getErrorCode());
-        errorResponse.setErrorMessage(applicationException.getErrorMessage());
-        errorResponse.setStatusCode(httpStatus.value());
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadableException(
+    ) {
+        var httpStatus = HttpStatus.BAD_REQUEST;
 
-        return errorResponse;
+        var apiException = new ApiException(
+                ERROR_CODE__VALIDATION_ERROR,
+                ERROR_MESSAGE__MISSING_REQUIRED_PARAMS,
+                httpStatus
+        );
+
+        var apiErrorResponse = getApiErrorResponse(apiException);
+
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException methodArgumentNotValidException
+    ) throws JsonProcessingException {
+        Map<String, String> errors = new HashMap<>();
+
+        methodArgumentNotValidException.getBindingResult()
+                .getAllErrors()
+                .forEach(
+                        error -> {
+                            String fieldName = ((FieldError) error).getField();
+                            String errorMessage = error.getDefaultMessage();
+
+                            errors.put(fieldName, errorMessage);
+                        }
+                );
+
+        var httpStatus = HttpStatus.BAD_REQUEST;
+
+        var apiException = new ApiException(
+                ERROR_CODE__VALIDATION_ERROR,
+                objectMapper.writeValueAsString(errors),
+                httpStatus
+        );
+
+        var apiErrorResponse = getApiErrorResponse(apiException);
+
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
+    }
+
+    private ApiErrorResponse getApiErrorResponse(BaseApplicationException applicationException) {
+        return ApiErrorResponse.builder()
+                .errorCode(applicationException.getErrorCode())
+                .errorMessage(applicationException.getErrorMessage())
+                .statusCode(applicationException.getHttpStatus().value())
+                .build();
     }
 }

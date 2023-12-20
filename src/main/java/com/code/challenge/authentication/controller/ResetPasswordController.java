@@ -1,6 +1,6 @@
 package com.code.challenge.authentication.controller;
 
-import com.code.challenge.authentication.dto.ErrorResponse;
+import com.code.challenge.authentication.dto.ApiErrorResponse;
 import com.code.challenge.authentication.dto.ResetPasswordRequest;
 import com.code.challenge.authentication.dto.ResetPasswordResponse;
 import com.code.challenge.authentication.exception.CustomerNotFoundException;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Reset Password", description = "Endpoints for reset password")
 @Validated
+@Tag(name = "Reset Password", description = "Endpoints for reset password")
 @RestController
 @RequestMapping(
         value = "/v1",
@@ -50,6 +50,7 @@ public class ResetPasswordController {
                             responseCode = "200",
                             description = "Successful operation",
                             content = @Content(
+                                    mediaType = "application/json",
                                     schema = @Schema(
                                             implementation = ResetPasswordResponse.class
                                     )
@@ -59,23 +60,29 @@ public class ResetPasswordController {
                             responseCode = "400",
                             description = "Request with not valid email.",
                             content = @Content(
+                                    mediaType = "application/json",
                                     schema = @Schema(
-                                            implementation = ErrorResponse.class
+                                            implementation = ApiErrorResponse.class
                                     )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "404",
                             description = "Customer with given email does not exist.",
                             content = @Content(
+                                    mediaType = "application/json",
                                     schema = @Schema(
-                                            implementation = ErrorResponse.class
+                                            implementation = ApiErrorResponse.class
                                     )
                             )
                     )
             }
     )
-    @PostMapping(value = "/reset-password")
+    @PostMapping(
+            value = "/reset-password",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<ResetPasswordResponse> resetPassword(
             @Valid
             @RequestBody

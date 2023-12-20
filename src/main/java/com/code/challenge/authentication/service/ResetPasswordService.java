@@ -10,10 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE_CUSTOMER_NOT_FOUND;
-import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE_INTERNAL_SERVER_ERROR;
-import static com.code.challenge.authentication.constant.ApplicationErrorMessage.ERROR_MESSAGE_CUSTOMER_NOT_FOUND;
-import static com.code.challenge.authentication.constant.ApplicationErrorMessage.ERROR_MESSAGE_INTERNAL_SERVER_ERROR;
+import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__CUSTOMER_NOT_FOUND;
+import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__INTERNAL_SERVER_ERROR;
+import static com.code.challenge.authentication.constant.ApplicationErrorMessage.ERROR_MESSAGE__CUSTOMER_NOT_FOUND;
+import static com.code.challenge.authentication.constant.ApplicationErrorMessage.ERROR_MESSAGE__INTERNAL_SERVER_ERROR;
 
 @Service
 public class ResetPasswordService {
@@ -27,11 +27,11 @@ public class ResetPasswordService {
 
     public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws CustomerNotFoundException, CustomerNotUpdatedException {
         var customer = customerRepository.findCustomerByEmail(resetPasswordRequest.getEmail());
-        if (null == customer) {
+        if (customer == null) {
             throw new CustomerNotFoundException(
-                    ERROR_CODE_CUSTOMER_NOT_FOUND,
-                    ERROR_MESSAGE_CUSTOMER_NOT_FOUND,
-                    HttpStatus.BAD_REQUEST
+                    ERROR_CODE__CUSTOMER_NOT_FOUND,
+                    ERROR_MESSAGE__CUSTOMER_NOT_FOUND,
+                    HttpStatus.NOT_FOUND
             );
         }
 
@@ -44,8 +44,8 @@ public class ResetPasswordService {
             customerRepository.save(customer);
         } catch (Exception exception) {
             throw new CustomerNotUpdatedException(
-                    ERROR_CODE_INTERNAL_SERVER_ERROR,
-                    ERROR_MESSAGE_INTERNAL_SERVER_ERROR,
+                    ERROR_CODE__INTERNAL_SERVER_ERROR,
+                    ERROR_MESSAGE__INTERNAL_SERVER_ERROR,
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }

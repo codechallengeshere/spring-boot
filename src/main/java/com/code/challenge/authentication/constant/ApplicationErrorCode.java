@@ -5,7 +5,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ApplicationErrorCode {
 
-    public static final String ERROR_CODE_INTERNAL_SERVER_ERROR = "110";
+    public static final String ERROR_CODE__INTERNAL_SERVER_ERROR = "0100";
 
-    public static final String ERROR_CODE_CUSTOMER_NOT_FOUND = "100";
+    public static final String ERROR_CODE__VALIDATION_ERROR = "0200";
+
+    public static final String ERROR_CODE__CUSTOMER_NOT_FOUND = "0300";
 }
