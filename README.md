@@ -18,13 +18,22 @@
 
 * @TODO
 
+## Dependencies
+
+* Java17
+* For development process need to run "mail-server" from docker-compose file
+
+## Service
+
+* Context path - /authentication
+
 ## Swagger
 
-* url - /authentication/swagger-ui/index.html
+* Url - /authentication/swagger-ui/index.html
 
 ## H2 Console
 
-* url - /authentication/h2-console
+* Url - /authentication/h2-console
 
 ## Authors
 
