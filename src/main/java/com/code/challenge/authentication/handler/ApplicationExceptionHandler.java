@@ -3,7 +3,6 @@ package com.code.challenge.authentication.handler;
 import com.code.challenge.authentication.dto.ApiErrorResponse;
 import com.code.challenge.authentication.exception.*;
 import com.code.challenge.authentication.helper.ApplicationHelper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -28,37 +27,44 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(SendMailException.class)
     public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
-        log.debug("ResetPasswordController#handleSendMailException: start " + ApplicationHelper.convertObjectToJsonString(sendMailException));
+        log.error("ResetPasswordController#handleSendMailException: start: " + ApplicationHelper.convertObjectToJsonString(sendMailException));
 
         var httpStatus = sendMailException.getHttpStatus();
 
         var apiErrorResponse = getApiErrorResponse(sendMailException);
 
-        log.debug("ResetPasswordController#handleSendMailException: end " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
+        log.debug("ResetPasswordController#handleSendMailException: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotFoundExceptionHandler(CustomerNotFoundException customerNotFoundException) {
+        log.error("ResetPasswordController#handleCustomerNotFoundExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotFoundException));
+
         var httpStatus = customerNotFoundException.getHttpStatus();
 
         var apiErrorResponse = getApiErrorResponse(customerNotFoundException);
 
+        log.debug("ResetPasswordController#handleCustomerNotFoundExceptionHandler: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(CustomerNotUpdatedException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotUpdatedExceptionHandler(CustomerNotUpdatedException customerNotUpdatedException) {
+        log.error("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotUpdatedException));
+
         var httpStatus = customerNotUpdatedException.getHttpStatus();
 
         var apiErrorResponse = getApiErrorResponse(customerNotUpdatedException);
 
+        log.debug("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadableException(
-    ) {
+    protected ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadableException() {
+        log.error("ResetPasswordController#handleHttpMessageNotReadableException: start");
+
         var httpStatus = HttpStatus.BAD_REQUEST;
 
         var apiException = new ApiException(
@@ -69,13 +75,16 @@ public class ApplicationExceptionHandler {
 
         var apiErrorResponse = getApiErrorResponse(apiException);
 
+        log.debug("ResetPasswordController#handleHttpMessageNotReadableException: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException methodArgumentNotValidException
-    ) throws JsonProcessingException {
+    ) {
+        log.error("ResetPasswordController#handleMethodArgumentNotValidException: start: " + ApplicationHelper.convertObjectToJsonString(methodArgumentNotValidException));
+
         Map<String, String> errors = new HashMap<>();
 
         methodArgumentNotValidException.getBindingResult()
@@ -99,14 +108,20 @@ public class ApplicationExceptionHandler {
 
         var apiErrorResponse = getApiErrorResponse(apiException);
 
+        log.debug("ResetPasswordController#handleMethodArgumentNotValidException: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
     private ApiErrorResponse getApiErrorResponse(BaseApplicationException applicationException) {
-        return ApiErrorResponse.builder()
+        log.debug("ResetPasswordController#getApiErrorResponse: start: " + ApplicationHelper.convertObjectToJsonString(applicationException));
+
+        var apiErrorResponse = ApiErrorResponse.builder()
                 .errorCode(applicationException.getErrorCode())
                 .errorMessage(applicationException.getErrorMessage())
                 .statusCode(applicationException.getHttpStatus().value())
                 .build();
+
+        log.debug("ResetPasswordController#getApiErrorResponse: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
+        return apiErrorResponse;
     }
 }

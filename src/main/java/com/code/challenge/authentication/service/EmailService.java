@@ -32,7 +32,7 @@ public class EmailService {
                 "to", MaskUtils.maskAsEmail(to),
                 "token", MaskUtils.mask(token, 21, 0)
         );
-        log.debug("EmailService#sendEmail: " + ApplicationHelper.convertObjectToJsonString(paramsToLog));
+        log.debug("EmailService#sendEmail#sendResetPasswordTokenMail: start: " + ApplicationHelper.convertObjectToJsonString(paramsToLog));
 
         var simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailPropertiesConfig.getFrom());
