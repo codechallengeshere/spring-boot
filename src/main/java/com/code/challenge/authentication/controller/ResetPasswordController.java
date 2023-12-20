@@ -5,6 +5,7 @@ import com.code.challenge.authentication.dto.ResetPasswordRequest;
 import com.code.challenge.authentication.dto.ResetPasswordResponse;
 import com.code.challenge.authentication.exception.CustomerNotFoundException;
 import com.code.challenge.authentication.exception.CustomerNotUpdatedException;
+import com.code.challenge.authentication.exception.SendMailException;
 import com.code.challenge.authentication.service.ResetPasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -85,7 +86,7 @@ public class ResetPasswordController {
             @Valid
             @RequestBody
             ResetPasswordRequest resetPasswordRequest
-    ) throws CustomerNotFoundException, CustomerNotUpdatedException {
+    ) throws CustomerNotFoundException, CustomerNotUpdatedException, SendMailException {
         var resetPasswordResponse = resetPasswordService.resetPassword(resetPasswordRequest);
 
         return new ResponseEntity<>(resetPasswordResponse, HttpStatus.OK);
