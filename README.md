@@ -22,6 +22,10 @@
 
 * url - /authentication/swagger-ui/index.html
 
+## H2 Console
+
+* url - /authentication/h2-console
+
 ## Authors
 
 * Aleksandrs R.
