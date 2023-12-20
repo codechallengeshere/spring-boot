@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__VALIDATION_ERROR;
@@ -27,7 +28,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(SendMailException.class)
     public ResponseEntity<ApiErrorResponse> handleSendMailException(SendMailException sendMailException) {
-        log.error("ResetPasswordController#handleSendMailException: start: " + ApplicationHelper.convertObjectToJsonString(sendMailException));
+        log.error("ResetPasswordController#handleSendMailException: start: " + ApplicationHelper.convertObjectToJsonString(List.of(sendMailException.getMessage())));
 
         var httpStatus = sendMailException.getHttpStatus();
 
@@ -39,7 +40,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotFoundExceptionHandler(CustomerNotFoundException customerNotFoundException) {
-        log.error("ResetPasswordController#handleCustomerNotFoundExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotFoundException));
+        log.error("ResetPasswordController#handleCustomerNotFoundExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(List.of(customerNotFoundException.getErrorMessage())));
 
         var httpStatus = customerNotFoundException.getHttpStatus();
 
@@ -51,7 +52,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(CustomerNotUpdatedException.class)
     public ResponseEntity<ApiErrorResponse> handleCustomerNotUpdatedExceptionHandler(CustomerNotUpdatedException customerNotUpdatedException) {
-        log.error("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(customerNotUpdatedException));
+        log.error("ResetPasswordController#handleCustomerNotUpdatedExceptionHandler: start: " + ApplicationHelper.convertObjectToJsonString(List.of(customerNotUpdatedException.getMessage())));
 
         var httpStatus = customerNotUpdatedException.getHttpStatus();
 
@@ -83,8 +84,6 @@ public class ApplicationExceptionHandler {
     protected ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException methodArgumentNotValidException
     ) {
-        log.error("ResetPasswordController#handleMethodArgumentNotValidException: start: " + ApplicationHelper.convertObjectToJsonString(methodArgumentNotValidException));
-
         Map<String, String> errors = new HashMap<>();
 
         methodArgumentNotValidException.getBindingResult()
@@ -97,6 +96,8 @@ public class ApplicationExceptionHandler {
                             errors.put(fieldName, errorMessage);
                         }
                 );
+
+        log.error("ResetPasswordController#handleMethodArgumentNotValidException: start: " + ApplicationHelper.convertObjectToJsonString(errors));
 
         var httpStatus = HttpStatus.BAD_REQUEST;
 
@@ -113,7 +114,7 @@ public class ApplicationExceptionHandler {
     }
 
     private ApiErrorResponse getApiErrorResponse(BaseApplicationException applicationException) {
-        log.debug("ResetPasswordController#getApiErrorResponse: start: " + ApplicationHelper.convertObjectToJsonString(applicationException));
+        log.trace("ResetPasswordController#getApiErrorResponse: start: " + ApplicationHelper.convertObjectToJsonString(applicationException));
 
         var apiErrorResponse = ApiErrorResponse.builder()
                 .errorCode(applicationException.getErrorCode())
@@ -121,7 +122,7 @@ public class ApplicationExceptionHandler {
                 .statusCode(applicationException.getHttpStatus().value())
                 .build();
 
-        log.debug("ResetPasswordController#getApiErrorResponse: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
+        log.trace("ResetPasswordController#getApiErrorResponse: end: " + ApplicationHelper.convertObjectToJsonString(apiErrorResponse));
         return apiErrorResponse;
     }
 }
