@@ -17,6 +17,8 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 import static com.code.challenge.authentication.constant.ApplicationErrorCode.ERROR_CODE__CUSTOMER_NOT_FOUND;
@@ -46,6 +48,10 @@ public class ResetPasswordService {
         var customer = getCustomer(resetPasswordRequest);
 
         String resetPasswordToken = BCrypt.hashpw(RandomStringUtils.random(5), BCrypt.gensalt());
+        var instant = Instant.now().plusSeconds(60 * 60 * 3);
+        var tokenExpiresAt = Date.from(instant);
+
+        customer.setResetPasswordTokenExpiresAt(tokenExpiresAt);
         customer.setResetPasswordToken(resetPasswordToken);
         customer.setEnabled(false);
 
