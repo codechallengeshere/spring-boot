@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Primary;
 public class AuthenticationApplicationConfig {
 
     @Getter
-    private static ObjectMapper maskingObjectMapper;
+    private static final ObjectMapper maskingObjectMapper = new MaskingObjectMapper();
 
     @Primary
     @Bean
@@ -20,16 +20,5 @@ public class AuthenticationApplicationConfig {
         return JsonMapper.builder()
                 .findAndAddModules()
                 .build();
-    }
-
-    @Bean
-    public ObjectMapper getObjectMapper() {
-        createMaskingObjectMapper();
-
-        return maskingObjectMapper;
-    }
-
-    private static void createMaskingObjectMapper() {
-        maskingObjectMapper = new MaskingObjectMapper();
     }
 }

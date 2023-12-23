@@ -8,7 +8,7 @@ spring:
 management:
   endpoint:
     health:
-      enabled: true
+      enabled: false
     info:
       enabled: false
   endpoints:
@@ -20,4 +20,7 @@ management:
 logging:
   config: src/test/resources/logback-test.xml
   level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.test.context.cache: INFO
     com.code.challenge.authentication: INFO
