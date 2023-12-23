@@ -112,7 +112,9 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
-    private ApiErrorResponse getApiErrorResponse(BaseApplicationException applicationException) {
+    private ApiErrorResponse getApiErrorResponse(
+            BaseException applicationException
+    ) {
         log.trace("ResetPasswordController#getApiErrorResponse: start: " + ApplicationHelper.convertObjectToJsonString(applicationException));
 
         var apiErrorResponse = ApiErrorResponse.builder()
